@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmyday_demo=self.webpackChunkmyday_demo||[]).push([[12],{12:(e,n,o)=>{o.r(n),o.d(n,{SwiftConnectWeb:()=>s});var t=o(403);class s extends t.E_{async setIdToken(e){console.log("setIdToken",e)}async authenticationWithToken(){console.log("authenticationWithToken")}async loginWithEmail(e){console.log("loginWithEmail",e)}}}}]);
+//# sourceMappingURL=12.b6b7fdee.chunk.js.map
