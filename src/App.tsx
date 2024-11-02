@@ -29,7 +29,7 @@ function App() {
     }
     , []);
     const onButtonClick = async () => {
-        await SwiftConnect.loginWithEmail({username: "jeff.martin@eptura.com", password: "Jo&9hUS2"});
+       alert('button clicked');
     }
 
     const onTokenButtonClick = async () => {
