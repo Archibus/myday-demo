@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {isAuthenticatedAtom} from "../store/authentication";
-import {useSetAtom} from "jotai";
+// import {isAuthenticatedAtom} from "../store/authentication";
+// import {useSetAtom} from "jotai";
 import {useState} from "react";
 import {SwiftConnect} from "@archibus/swift-connect";
 

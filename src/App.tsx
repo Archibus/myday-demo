@@ -1,6 +1,6 @@
-import React, {PropsWithChildren, ReactElement, useEffect} from 'react';
+import React, {ReactElement, useEffect} from 'react';
 import './App.css';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import {SwiftConnect} from "@archibus/swift-connect";
 // import {Preferences} from "@capacitor/preferences";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
