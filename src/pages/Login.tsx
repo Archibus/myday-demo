@@ -1,17 +1,13 @@
 import styled from 'styled-components';
-import {isAuthenticatedAtom} from "../store/authentication";
-import {useSetAtom} from "jotai";
 import {useEffect, useState} from "react";
 import {SwiftConnect} from "@archibus/swift-connect";
 import {Loader} from "../components/Loader";
 
 const Container = styled.div`
-    border: 4px solid #61dafb;
     display: flex;
     height: 100vh;
     width: 100vw;
     justify-content: center;
-    /*align-items: center;*/
 `;
 
 const LoginContainer = styled.div`

@@ -8,8 +8,6 @@ import {Main} from "./pages/Main";
 import {useAtom} from "jotai";
 import {isAuthenticatedAtom} from "./store/authentication";
 
-
-
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
     useEffect(() => {
