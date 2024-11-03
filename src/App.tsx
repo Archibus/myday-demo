@@ -10,6 +10,7 @@ import {isAuthenticatedAtom} from "./store/authentication";
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
+
     useEffect(() => {
             SwiftConnect.addListener('WalletDataReady', (data) => {
                 alert('WalletDataReady ' + JSON.stringify(data));
@@ -20,6 +21,7 @@ const App = () => {
             }
         }
         , [setIsAuthenticated]);
+
 
     return (
         isAuthenticated ? <Main /> : <Login />
