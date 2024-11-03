@@ -35,8 +35,10 @@ const App = () => {
     useEffect(() => {
             SwiftConnect.addListener('WalletDataReady', (data) => {
                 alert('WalletDataReady ' + JSON.stringify(data));
-
             });
+            return () => {
+                alert('remove listener');
+            }
         }
         , []);
 
