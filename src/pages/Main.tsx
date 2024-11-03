@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import addToWalletButton from '../assets/add_to_google_wallet_wallet-button.png';
+import {SwiftConnect} from "@archibus/swift-connect";
+import {useEffect} from "react";
+import {PluginListenerHandle} from "@capacitor/core";
 
 const Container = styled.div`
     display: flex;
@@ -11,8 +14,21 @@ const Container = styled.div`
 
 
 export const Main = () => {
-    const onAddToWallet = () => {
-        alert('Add to wallet clicked');
+
+    useEffect(() => {
+        let walletErrorListener: PluginListenerHandle | null = null;
+        (async () => {
+            walletErrorListener = await SwiftConnect.addListener('WalletError', (error) => {
+                alert('Error: ' + error.error);
+            });
+        })()
+          return () => {
+            walletErrorListener?.remove()
+          }
+    }, [])
+
+    const onAddToWallet = async () => {
+        await SwiftConnect.addToWallet();
     }
 
     return (

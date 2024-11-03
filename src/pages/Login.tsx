@@ -50,7 +50,7 @@ export const Login = () => {
         return () => {
             setIsLoading(false);
         }
-    })
+    }, [])
 
     const onLoginButtonClick = async () => {
         setIsLoading(true);
@@ -68,7 +68,7 @@ export const Login = () => {
             <Container>
                 <LoginContainer>
                     <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <Input type="password" autoComplete="off" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <Button onClick={onLoginButtonClick}>Login</Button>
                 </LoginContainer>
 

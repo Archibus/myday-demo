@@ -7,21 +7,23 @@ import {Login} from "./pages/Login";
 import {Main} from "./pages/Main";
 import {useAtom} from "jotai";
 import {isAuthenticatedAtom} from "./store/authentication";
+import {PluginListenerHandle} from "@capacitor/core";
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useAtom(isAuthenticatedAtom);
 
     useEffect(() => {
-            SwiftConnect.addListener('WalletDataReady', (data) => {
-                alert('WalletDataReady ' + JSON.stringify(data));
-                setIsAuthenticated(true);
-            });
-            return () => {
-                alert('remove listener');
-            }
-        }
-        , [setIsAuthenticated]);
+        let walletReadyListener: PluginListenerHandle | null = null;
+            (async () => {
+                walletReadyListener = await SwiftConnect.addListener('WalletDataReady', () => {
+                    setIsAuthenticated(true);
+                });
+            })()
 
+            return () => {
+                walletReadyListener?.remove();
+            }
+        }, [setIsAuthenticated]);
 
     return (
         isAuthenticated ? <Main /> : <Login />
