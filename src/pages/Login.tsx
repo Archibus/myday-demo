@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-// import {isAuthenticatedAtom} from "../store/authentication";
-// import {useSetAtom} from "jotai";
+import {isAuthenticatedAtom} from "../store/authentication";
+import {useSetAtom} from "jotai";
 import {useState} from "react";
 import {SwiftConnect} from "@archibus/swift-connect";
 
@@ -41,12 +41,11 @@ export const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    // const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
+    const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
 
     const onLoginButtonClick = async () => {
-        // setIsAuthenticated(true);
         await SwiftConnect.loginWithEmail({username, password});
-
+        setIsAuthenticated(true);
     }
     return (
         <Container>

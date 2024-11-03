@@ -1,9 +1,8 @@
-import React, {ReactElement, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 // import styled from 'styled-components';
 import {SwiftConnect} from "@archibus/swift-connect";
 // import {Preferences} from "@capacitor/preferences";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import {Login} from "./pages/Login";
 import {Main} from "./pages/Main";
@@ -30,21 +29,9 @@ const Button = styled.button`
  */
 
 
-const PrivateRoute = ({children}: {children: ReactElement}) => {
-    const isAuthenticated = useAtomValue(isAuthenticatedAtom);
-    return isAuthenticated ? children : <Login/>;
-}
-
-
-const router = createBrowserRouter([{
-    path: '/',
-    element: <PrivateRoute><Main/></PrivateRoute>,
-}, {path: '/login', element: <Login/>}
-]);
-
 
 const App = () => {
-
+    const isAuthenticated = useAtomValue(isAuthenticatedAtom);
     useEffect(() => {
             SwiftConnect.addListener('WalletDataReady', (data) => {
                 alert('WalletDataReady ' + JSON.stringify(data));
@@ -54,7 +41,7 @@ const App = () => {
         , []);
 
     return (
-        <RouterProvider router={router}/>
+        isAuthenticated ? <Main /> : <Login />
     );
 }
 
