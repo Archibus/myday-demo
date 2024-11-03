@@ -44,7 +44,8 @@ export const Login = () => {
     const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
 
     const onLoginButtonClick = async () => {
-        await SwiftConnect.loginWithEmail({username, password});
+        const user = username.toLowerCase().trim();
+        await SwiftConnect.loginWithEmail({username:user, password});
         setIsAuthenticated(true);
     }
     return (
