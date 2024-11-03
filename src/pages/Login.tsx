@@ -49,7 +49,7 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    // const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
+
 
     useEffect(() => {
         return () => {
@@ -69,9 +69,8 @@ export const Login = () => {
     }
     return (
         <>
-            <Loader isLoading={isLoading}/>
+            {isLoading ? <Loader isLoading={isLoading}/>: null}
             <Container>
-
                 <LoginContainer>
                     <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
