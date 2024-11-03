@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkmyday_demo=self.webpackChunkmyday_demo||[]).push([[12],{12:(o,e,l)=>{l.r(e),l.d(e,{SwiftConnectWeb:()=>a});var n=l(403);class a extends n.E_{async setIdToken(o){console.log("setIdToken",o)}async loginWithToken(){console.log("authenticationWithToken")}async loginWithEmail(o){console.log("loginWithEmail",o)}async addToGoogleWallet(){console.log("addToGoogleWallet")}}}}]);
-//# sourceMappingURL=12.3e048274.chunk.js.map
