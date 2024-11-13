@@ -16,7 +16,7 @@ const App = () => {
         let walletReadyListener: PluginListenerHandle | null = null;
             (async () => {
                 walletReadyListener = await SwiftConnect.addListener('WalletDataReady', () => {
-                    setIsAuthenticated(true);
+                    // setIsAuthenticated(true);
                 });
             })()
 

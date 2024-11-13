@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import {useEffect, useState} from "react";
 import {SwiftConnect} from "@archibus/swift-connect";
 import {Loader} from "../components/Loader";
+import {useSetAtom} from "jotai";
+import {isAuthenticatedAtom} from "../store/authentication";
 
 const Container = styled.div`
     display: flex;
@@ -45,6 +47,8 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
+
 
     useEffect(() => {
         return () => {
@@ -78,7 +82,13 @@ export const Login = () => {
         try {
             setIsLoading(true);
             const walletData = await SwiftConnect.fetchWalletData();
-            alert(JSON.stringify(walletData));
+            if(walletData.hasCredentialLink) {
+                await SwiftConnect.viewInWallet();
+            }
+            if(walletData.isCredentialDeployable) {
+                setIsAuthenticated(true);
+            }
+            alert("Wallet data is not available");
             setIsLoading(false);
         } catch(e) {
             setIsLoading(false);
@@ -94,7 +104,6 @@ export const Login = () => {
                     <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <Input type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <Button onClick={onLoginButtonClick}>Login</Button>
-
                     <Button onClick={onLoginUser}>Login User</Button>
                     <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
 
