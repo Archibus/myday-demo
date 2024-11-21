@@ -49,7 +49,6 @@ export const Login = () => {
 
     const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
 
-
     useEffect(() => {
         return () => {
             setIsLoading(false);
@@ -61,6 +60,8 @@ export const Login = () => {
         try {
             const user = username.toLowerCase().trim();
             await SwiftConnect.loginWithEmail({username: user, password});
+            setIsLoading(false);
+            alert('User logged in');
         } catch (e) {
             setIsLoading(false);
             alert('Login failed');
@@ -70,8 +71,9 @@ export const Login = () => {
     const onLoginUser = async () => {
         try {
             setIsLoading(true);
-            await SwiftConnect.loginWithUser()
+            await SwiftConnect.loginWithUser();
             setIsLoading(false);
+            alert('User logged in');
         } catch(e) {
             setIsLoading(false);
             alert('Login failed');
@@ -106,7 +108,6 @@ export const Login = () => {
                     <Button onClick={onLoginButtonClick}>Login</Button>
                     <Button onClick={onLoginUser}>Login User</Button>
                     <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
-
                 </LoginContainer>
 
             </Container>
