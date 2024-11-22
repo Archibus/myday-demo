@@ -98,6 +98,11 @@ export const Login = () => {
         }
     }
 
+    const onIsSdkInitialized = async () => {
+        const isInitialized = await SwiftConnect.isSdkInitialized();
+        alert(isInitialized ? 'SDK is initialized' : 'SDK is not initialized');
+    }
+
     return (
         <>
             {isLoading ? <Loader isLoading={isLoading}/>: null}
@@ -108,6 +113,7 @@ export const Login = () => {
                     <Button onClick={onLoginButtonClick}>Login</Button>
                     <Button onClick={onLoginUser}>Login User</Button>
                     <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
+                    <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
                 </LoginContainer>
 
             </Container>
