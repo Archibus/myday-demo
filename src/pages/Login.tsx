@@ -100,7 +100,7 @@ export const Login = () => {
 
     const onIsSdkInitialized = async () => {
         const isInitialized = await SwiftConnect.isSdkInitialized();
-        alert(isInitialized ? 'SDK is initialized' : 'SDK is not initialized');
+        alert(isInitialized.value ? 'SDK is initialized' : 'SDK is not initialized');
     }
 
     return (
