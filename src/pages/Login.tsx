@@ -80,6 +80,18 @@ export const Login = () => {
         }
     }
 
+    const onLoginWithToken = async () => {
+        try {
+            setIsLoading(true);
+            await SwiftConnect.loginWithToken();
+            setIsLoading(false);
+            alert('User logged in');
+        } catch(e) {
+            setIsLoading(false);
+            alert('Login failed');
+        }
+    }
+
     const onFetchWalletData = async () => {
         try {
             setIsLoading(true);
@@ -114,6 +126,7 @@ export const Login = () => {
                     <Button onClick={onLoginUser}>Login User</Button>
                     <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
                     <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
+                    <Button onClick={onLoginWithToken}>Login With Token</Button>
                 </LoginContainer>
 
             </Container>
