@@ -4,7 +4,7 @@ import {SwiftConnect} from "@archibus/swift-connect";
 import {Loader} from "../components/Loader";
 import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
-import addToWalletButton from "./assets/add_to_google_wallet_wallet-button.png";
+import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
 
 const Container = styled.div`
     display: flex;
