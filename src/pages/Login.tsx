@@ -4,6 +4,7 @@ import {SwiftConnect} from "@archibus/swift-connect";
 import {Loader} from "../components/Loader";
 import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
+import addToWalletButton from "./assets/add_to_google_wallet_wallet-button.png";
 
 const Container = styled.div`
     display: flex;
@@ -47,12 +48,31 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    const [addToWallet, setAddToWallet] = useState(false);
+
     const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
 
+    /*
     useEffect(() => {
         return () => {
             setIsLoading(false);
         }
+    }, [])
+
+     */
+    useEffect(() => {
+        (async () => {
+            // Login
+            await SwiftConnect.loginWithUser();
+            const walletData = await SwiftConnect.fetchWalletData();
+            if (walletData.hasCredentialLink) {
+                await SwiftConnect.viewInWallet();
+            }
+            if (walletData.isCredentialDeployable) {
+                setAddToWallet(true);
+            }
+
+        })()
     }, [])
 
     const onLoginButtonClick = async () => {
@@ -74,7 +94,7 @@ export const Login = () => {
             await SwiftConnect.loginWithUser();
             setIsLoading(false);
             alert('User logged in');
-        } catch(e) {
+        } catch (e) {
             setIsLoading(false);
             alert('Login failed');
         }
@@ -86,7 +106,7 @@ export const Login = () => {
             await SwiftConnect.loginWithToken();
             setIsLoading(false);
             alert('User logged in');
-        } catch(e) {
+        } catch (e) {
             setIsLoading(false);
             alert('Login failed');
         }
@@ -96,15 +116,15 @@ export const Login = () => {
         try {
             setIsLoading(true);
             const walletData = await SwiftConnect.fetchWalletData();
-            if(walletData.hasCredentialLink) {
+            if (walletData.hasCredentialLink) {
                 await SwiftConnect.viewInWallet();
             }
-            if(walletData.isCredentialDeployable) {
+            if (walletData.isCredentialDeployable) {
                 setIsAuthenticated(true);
             }
             alert("Wallet data is not available");
             setIsLoading(false);
-        } catch(e) {
+        } catch (e) {
             setIsLoading(false);
             alert('Fetch Wallet Data failed');
         }
@@ -115,21 +135,30 @@ export const Login = () => {
         alert(isInitialized.value ? 'SDK is initialized' : 'SDK is not initialized');
     }
 
+    const onAddToWallet = async () => {
+        await SwiftConnect.addToWallet();
+    }
+
     return (
         <>
-            {isLoading ? <Loader isLoading={isLoading}/>: null}
-            <Container>
-                <LoginContainer>
-                    <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                    <Input type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)}/>
-                    <Button onClick={onLoginButtonClick}>Login</Button>
-                    <Button onClick={onLoginUser}>Login User</Button>
-                    <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
-                    <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
-                    <Button onClick={onLoginWithToken}>Login With Token</Button>
-                </LoginContainer>
+            {isLoading ? <Loader isLoading={isLoading}/> : null}
+            {addToWallet ? <Container>
+                    <img src={addToWalletButton} alt="add to wallet" onClick={onAddToWallet}/>
+                </Container> :
+                <Container>
+                    <LoginContainer>
+                        <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                        <Input type="password" autoComplete="new-password" value={password}
+                               onChange={(e) => setPassword(e.target.value)}/>
+                        <Button onClick={onLoginButtonClick}>Login</Button>
+                        <Button onClick={onLoginUser}>Login User</Button>
+                        <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
+                        <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
+                        <Button onClick={onLoginWithToken}>Login With Token</Button>
+                    </LoginContainer>
 
-            </Container>
+                </Container>
+            }
         </>
     );
 }
