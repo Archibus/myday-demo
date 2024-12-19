@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://archibus.github.io/myday-demo",
   "dependencies": {
-    "@archibus/swift-connect": "0.0.6",
+    "@archibus/swift-connect": "file:.yalc/@archibus/swift-connect",
     "@capacitor/android": "^6.1.2",
     "@capacitor/core": "^6.1.2",
     "@capacitor/preferences": "^6.0.2",

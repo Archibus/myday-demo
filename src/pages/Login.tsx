@@ -5,6 +5,7 @@ import {Loader} from "../components/Loader";
 import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
 import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
+import {PluginListenerHandle} from "@capacitor/core";
 
 const Container = styled.div`
     display: flex;
@@ -60,18 +61,37 @@ export const Login = () => {
     }, [])
 
      */
+
+    useEffect(() => {
+        let onResumeListener: PluginListenerHandle | null = null;
+        (async () => {
+            onResumeListener = await SwiftConnect.addListener('SwiftConnectPluginResume', () => {
+                alert('App Resumed');
+            });
+        })()
+        return () => {
+            onResumeListener?.remove()
+        }
+    }, [])
+
+
     useEffect(() => {
         (async () => {
-            // Login
-            await SwiftConnect.loginWithUser();
-            const walletData = await SwiftConnect.fetchWalletData();
-            if (walletData.hasCredentialLink) {
-                await SwiftConnect.viewInWallet();
+            try {
+                await SwiftConnect.loginWithUser();
+                const walletData = await SwiftConnect.fetchWalletData();
+                if (walletData.hasCredentialLink) {
+                    await SwiftConnect.viewInWallet();
+                }
+                if (walletData.isCredentialDeployable) {
+                    setAddToWallet(true);
+                }
+            } catch(ex) {
+                alert('Oops! Something went wrong');
+                if(ex instanceof Error) {
+                    alert(ex.message);
+                }
             }
-            if (walletData.isCredentialDeployable) {
-                setAddToWallet(true);
-            }
-
         })()
     }, [])
 
