@@ -126,7 +126,7 @@ export const Login = () => {
         const scope = 'https://graph.microsoft.com/.default';
         const tokenInfo = await IntuneMAM.acquireTokenSilent({
             scopes: [scope],
-            upn: "intune_test@archibus.software.com"
+            upn: "intune_test@archibus.software"
         });
 
         alert('IntuneMAM ' + tokenInfo);
