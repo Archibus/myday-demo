@@ -5,7 +5,12 @@ import {Loader} from "../components/Loader";
 import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
 import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
-import {PluginListenerHandle} from "@capacitor/core";
+import {PluginListenerHandle, registerPlugin} from "@capacitor/core";
+
+// @ts-ignore
+const IntuneMAM = registerPlugin('IntuneMAM', {}) as Intune.IntuneMAM;
+
+
 
 const Container = styled.div`
     display: flex;
@@ -114,6 +119,7 @@ export const Login = () => {
      */
 
     const onLoginButtonClick = async () => {
+        console.log('IntuneMAM', IntuneMAM);
         setIsLoading(true);
         try {
             const user = username.toLowerCase().trim();
