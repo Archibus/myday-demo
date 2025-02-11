@@ -63,18 +63,34 @@ export const Login = () => {
      */
 
     useEffect(() => {
+        let onStartListener: PluginListenerHandle | null = null;
         let onResumeListener: PluginListenerHandle | null = null;
+        let onStopListener: PluginListenerHandle | null = null;
+        let onDestroyListener: PluginListenerHandle | null = null;
         (async () => {
             onResumeListener = await SwiftConnect.addListener('SwiftConnectPluginResume', () => {
-                alert('App Resumed');
+                alert('Plugin Resumed');
+            });
+            onStopListener = await SwiftConnect.addListener('SwiftConnectPluginStop', () => {
+                alert('Plugin Stopped');
+            });
+            onStartListener = await SwiftConnect.addListener('SwiftConnectPluginStart', () => {
+                alert('Plugin Started');
+            });
+            onDestroyListener = await SwiftConnect.addListener('SwiftConnectPluginDestroy', () => {
+                alert('Plugin Destroyed');
             });
         })()
         return () => {
             onResumeListener?.remove()
+            onStopListener?.remove()
+            onStartListener?.remove()
+            onDestroyListener?.remove()
         }
     }, [])
 
 
+    /*
     useEffect(() => {
         (async () => {
             try {
@@ -94,6 +110,8 @@ export const Login = () => {
             }
         })()
     }, [])
+
+     */
 
     const onLoginButtonClick = async () => {
         setIsLoading(true);
