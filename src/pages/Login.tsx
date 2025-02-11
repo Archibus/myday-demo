@@ -120,14 +120,18 @@ export const Login = () => {
 
     const onLoginButtonClick = async () => {
         const user = await IntuneMAM.enrolledAccount();
+        const msalScope = await IntuneMAM.getMsalScope();
         if (user) {
-            console.log('upn', user.upn);
-            const scope = 'https://graph.microsoft.com/.default';
-            const tokenInfo = await IntuneMAM.acquireTokenSilent({
+            console.log('upn', user.upn, ' scope: ', msalScope.scope);
+            const scope = msalScope.scope;
+            const tokens = await IntuneMAM.acquireTokenSilent({
                 scopes: [scope],
                 upn: user.upn
             });
-            alert('IntuneMAM ' + tokenInfo.idToken);
+            if (tokens.idToken) {
+                await SwiftConnect.setIdToken({idToken: tokens.idToken});
+                alert('IntuneMAM ' + tokens.idToken);
+            }
         }
 
 
