@@ -119,19 +119,18 @@ export const Login = () => {
      */
 
     const onLoginButtonClick = async () => {
-        console.log('IntuneMAM', IntuneMAM);
         const user = await IntuneMAM.enrolledAccount();
         if (user) {
             console.log('upn', user.upn);
+            const scope = 'https://graph.microsoft.com/.default';
+            const tokenInfo = await IntuneMAM.acquireTokenSilent({
+                scopes: [scope],
+                upn: user.upn
+            });
+            alert('IntuneMAM ' + tokenInfo.idToken);
         }
 
-        const scope = 'https://graph.microsoft.com/.default';
-        const tokenInfo = await IntuneMAM.acquireTokenSilent({
-            scopes: [scope],
-            upn: "intune_test@archibus.software"
-        });
 
-        alert('IntuneMAM ' + tokenInfo.idToken);
         setIsLoading(true);
         try {
             const user = username.toLowerCase().trim();
