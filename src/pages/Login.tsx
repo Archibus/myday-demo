@@ -121,7 +121,7 @@ export const Login = () => {
     const onLoginButtonClick = async () => {
         console.log('IntuneMAM', IntuneMAM);
         const upn = IntuneMAM.enrolledAccount().upn;
-        console.log('upn', upn);
+        console.log('upn', JSON.stringify(upn));
 
         const scope = 'https://graph.microsoft.com/.default';
         const tokenInfo = await IntuneMAM.acquireTokenSilent({
