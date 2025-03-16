@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkmyday_demo=self.webpackChunkmyday_demo||[]).push([[691],{691:(e,s,n)=>{n.r(s),n.d(s,{PdfViewerWeb:()=>r});var o=n(403);class r extends o.E_{async echo(e){return console.log("ECHO",e),e}present(e){console.warn("This feature is not implemented for web",e)}}}}]);
-//# sourceMappingURL=691.081fef5b.chunk.js.map
