@@ -25,14 +25,3 @@ declare namespace Intune {
     displayDiagnosticConsole: () => Promise<void>;
   }
 }
-
-/*
-declare namespace SwiftConnect {
-
-  interface SwiftConn {
-    echo: ({value: string}) => Promise<{ value: string }>;
-    initSdk: () => Promise<void>;
-  }
-}
-
- */

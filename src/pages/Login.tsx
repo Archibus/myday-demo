@@ -6,6 +6,7 @@ import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
 import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
 import {PluginListenerHandle, registerPlugin} from "@capacitor/core";
+import { PdfViewer } from 'cap-pdf-viewer';
 
 // @ts-ignore
 const IntuneMAM = registerPlugin('IntuneMAM', {}) as Intune.IntuneMAM;
@@ -119,15 +120,29 @@ export const Login = () => {
      */
 
     const onLoginButtonClick = async () => {
+        if(IntuneMAM) {
+            alert('IntuneMAM is available');
+        }
+        const tokens = await IntuneMAM.acquireTokenSilent();
+        alert('IntuneMAM ' + tokens.idToken);
         const user = await IntuneMAM.enrolledAccount();
         const msalScope = await IntuneMAM.getMsalScope();
         if (user) {
             console.log('upn', user.upn, ' scope: ', msalScope.scope);
             const scope = msalScope.scope;
+
+            /*
             const tokens = await IntuneMAM.acquireTokenSilent({
                 scopes: [scope],
                 upn: user.upn
             });
+
+             */
+            if(IntuneMAM) {
+                alert('IntuneMAM is available');
+            }
+            const tokens = await IntuneMAM.acquireTokenSilent();
+            alert('IntuneMAM ' + tokens.idToken);
             if (tokens.idToken) {
                 await SwiftConnect.setIdToken({idToken: tokens.idToken});
                 alert('IntuneMAM ' + tokens.idToken);
@@ -168,6 +183,14 @@ export const Login = () => {
         } catch (e) {
             setIsLoading(false);
             alert('Login failed');
+        }
+    }
+
+    const onOpenPdf = async () => {
+        try {
+            await PdfViewer.present({url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'});
+        } catch (e) {
+            alert('Failed to open PDF');
         }
     }
 
@@ -214,6 +237,7 @@ export const Login = () => {
                         <Button onClick={onFetchWalletData}>Fetch Wallet Data</Button>
                         <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
                         <Button onClick={onLoginWithToken}>Login With Token</Button>
+                        <Button onClick={onOpenPdf}>Open PDF</Button>
                     </LoginContainer>
 
                 </Container>
