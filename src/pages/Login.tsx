@@ -125,7 +125,7 @@ export const Login = () => {
         }
 
         const msalScope = await IntuneMAM.getMsalScope();
-        alert('IntuneMAM msalScope' + msalScope);
+        alert('IntuneMAM msalScope' + JSON.stringify(msalScope));
 
     }
 
