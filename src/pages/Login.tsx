@@ -119,6 +119,16 @@ export const Login = () => {
 
      */
 
+    const onTestMsalScope = async () => {
+        if(IntuneMAM) {
+            alert('IntuneMAM is available');
+        }
+
+        const msalScope = await IntuneMAM.getMsalScope();
+        alert('IntuneMAM msalScope' + msalScope);
+
+    }
+
     const onLoginButtonClick = async () => {
         if(IntuneMAM) {
             alert('IntuneMAM is available');
@@ -127,6 +137,7 @@ export const Login = () => {
         alert('IntuneMAM ' + tokens.idToken);
         const user = await IntuneMAM.enrolledAccount();
         const msalScope = await IntuneMAM.getMsalScope();
+        alert('IntuneMAM msalScope' + msalScope);
         if (user) {
             console.log('upn', user.upn, ' scope: ', msalScope.scope);
             const scope = msalScope.scope;
@@ -238,6 +249,7 @@ export const Login = () => {
                         <Button onClick={onIsSdkInitialized}>Is SDK Initialized</Button>
                         <Button onClick={onLoginWithToken}>Login With Token</Button>
                         <Button onClick={onOpenPdf}>Open PDF</Button>
+                        <Button onClick={onTestMsalScope}>Test Msal Scope</Button>
                     </LoginContainer>
 
                 </Container>
