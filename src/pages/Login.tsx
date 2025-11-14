@@ -6,7 +6,7 @@ import {useSetAtom} from "jotai";
 import {isAuthenticatedAtom} from "../store/authentication";
 import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
 import {PluginListenerHandle, registerPlugin} from "@capacitor/core";
-import { PdfViewer } from 'cap-pdf-viewer';
+import {PdfViewer} from "@archibus/cap-pdf-viewer";
 
 // @ts-ignore
 const IntuneMAM = registerPlugin('IntuneMAM', {}) as Intune.IntuneMAM;
