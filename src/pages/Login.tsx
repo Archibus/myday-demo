@@ -199,8 +199,7 @@ export const Login = () => {
 
     const onOpenPdf = async () => {
         try {
-            //await PdfViewer.present({url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'});
-            await PdfViewer.present({url: 'https://ubs.aremis.com/archibus/schema/ab-products/essential/doc/MyDay_mobile_User_Guide.pdf'});
+            PdfViewer.present({url: 'https://www.adobe.com/support/products/enterprise/knowledgecenter/media/c4611_sample_explain.pdf'});
         } catch (e) {
             alert('Failed to open PDF');
         }
