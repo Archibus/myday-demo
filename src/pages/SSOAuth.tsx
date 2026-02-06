@@ -25,14 +25,58 @@ const ErrorMessage = styled.div`
 
 export const Login = () => {
     const [error, setError] = useState<string | null>(null);
+    const [waitingForNative, setWaitingForNative] = useState(false);
 
     const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
     const setUserInfo = useSetAtom(userInfoAtom);
     const oauth2Service = useAtomValue(oauth2ServiceAtom);
 
+    // Check if running inside a native WebView (mobile app)
+    const isInNativeWebView = () => {
+        const userAgent = navigator.userAgent || navigator.vendor;
+        // Check for Capacitor, or common WebView indicators
+        return /Capacitor/i.test(userAgent) ||
+               /wv|WebView/i.test(userAgent) ||
+               (window as any).Capacitor !== undefined;
+    };
+
+    useEffect(() => {
+        // Listen for native token injection event
+        const handleNativeTokens = () => {
+            console.log('🔐 Native tokens received, checking authentication...');
+            if (oauth2Service.isAuthenticated()) {
+                const userInfo = oauth2Service.getUserInfo();
+                setUserInfo(userInfo);
+                setIsAuthenticated(true);
+            }
+        };
+
+        window.addEventListener('nativeTokensInjected', handleNativeTokens);
+
+        return () => {
+            window.removeEventListener('nativeTokensInjected', handleNativeTokens);
+        };
+    }, [oauth2Service, setIsAuthenticated, setUserInfo]);
+
     useEffect(() => {
         const handleAuthFlow = async () => {
             try {
+                // First, check if already authenticated (tokens already exist)
+                if (oauth2Service.isAuthenticated()) {
+                    const userInfo = oauth2Service.getUserInfo();
+                    setUserInfo(userInfo);
+                    setIsAuthenticated(true);
+                    return;
+                }
+
+                // Check if tokens were injected from native app
+                if (window.isNativeTokenInjected) {
+                    const userInfo = oauth2Service.getUserInfo();
+                    setUserInfo(userInfo);
+                    setIsAuthenticated(true);
+                    return;
+                }
+
                 // Check if this is a callback from Microsoft login
                 const code = new URLSearchParams(window.location.search).get('code');
 
@@ -45,8 +89,21 @@ export const Login = () => {
                         setIsAuthenticated(true);
                         return;
                     }
+                } else if (isInNativeWebView()) {
+                    // In native WebView - wait briefly for token injection
+                    console.log('🔐 Detected native WebView, waiting for token injection...');
+                    setWaitingForNative(true);
+
+                    // Give native app 2 seconds to inject tokens
+                    setTimeout(() => {
+                        if (!oauth2Service.isAuthenticated()) {
+                            console.log('🔐 No native tokens received, falling back to PKCE login');
+                            setWaitingForNative(false);
+                            oauth2Service.initiateLogin();
+                        }
+                    }, 2000);
                 } else {
-                    // No callback code, automatically redirect to Microsoft login
+                    // Not in native WebView, proceed with PKCE login
                     await oauth2Service.initiateLogin();
                 }
             } catch (err) {
@@ -64,15 +121,15 @@ export const Login = () => {
             <Container>
                 <ErrorMessage>
                     <strong>Authentication Error</strong>
-        <br /><br />
-        {error}
-        <br /><br />
-        <a href="/" style={{ color: '#d32f2f', textDecoration: 'underline' }}>
-        Try again
-        </a>
-        </ErrorMessage>
-        </Container>
-    );
+                    <br /><br />
+                    {error}
+                    <br /><br />
+                    <a href="/" style={{ color: '#d32f2f', textDecoration: 'underline' }}>
+                        Try again
+                    </a>
+                </ErrorMessage>
+            </Container>
+        );
     }
 
     return <Loader isLoading={true} />;

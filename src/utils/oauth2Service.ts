@@ -198,6 +198,31 @@ export class OAuth2Service {
   }
 
   /**
+   * Inject tokens from native mobile app (for WebView SSO)
+   * Called via JavaScript bridge from iOS/Android native layer
+   */
+  injectTokensFromNative(tokenData: {
+    accessToken: string;
+    idToken: string;
+    expiresIn?: number;
+  }): boolean {
+    try {
+      const tokens: TokenResponse = {
+        accessToken: tokenData.accessToken,
+        idToken: tokenData.idToken,
+        expiresIn: tokenData.expiresIn || 3600,
+        expiresAt: Date.now() + (tokenData.expiresIn || 3600) * 1000,
+      };
+      this.storeTokens(tokens);
+      console.log('🔐 Tokens injected from native app');
+      return true;
+    } catch (error) {
+      console.error('Failed to inject tokens from native:', error);
+      return false;
+    }
+  }
+
+  /**
    * Get access token
    */
   getAccessToken(): string | null {
