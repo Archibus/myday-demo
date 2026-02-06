@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import {useEffect, useState} from "react";
 import {SwiftConnect} from "@archibus/swift-connect";
 import {Loader} from "../components/Loader";
-import {useSetAtom} from "jotai";
-import {isAuthenticatedAtom} from "../store/authentication";
+import {useSetAtom, useAtomValue} from "jotai";
+import {isAuthenticatedAtom, oauth2ServiceAtom, userInfoAtom} from "../store/authentication";
 import addToWalletButton from "../assets/add_to_google_wallet_wallet-button.png";
 import {PluginListenerHandle, registerPlugin} from "@capacitor/core";
 import {PdfViewer} from "@archibus/cap-pdf-viewer";
@@ -36,6 +36,23 @@ const Button = styled.button`
     border: none;
     font-size: 16px;
     border-radius: 4px;
+    cursor: pointer;
+`;
+
+const SignOutButton = styled.button`
+    height: 40px;
+    width: 120px;
+    color: white;
+    background-color: #d32f2f;
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+
+    &:hover {
+        background-color: #b71c1c;
+    }
 `;
 
 const Input = styled.input`
@@ -49,7 +66,7 @@ const Input = styled.input`
     border-radius: 4px;
 `;
 
-export const Login = () => {
+export const Home = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -58,6 +75,8 @@ export const Login = () => {
     const [addToWallet, setAddToWallet] = useState(false);
 
     const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
+    const setUserInfo = useSetAtom(userInfoAtom);
+    const oauth2Service = useAtomValue(oauth2ServiceAtom);
 
     /*
     useEffect(() => {
@@ -232,6 +251,12 @@ export const Login = () => {
         await SwiftConnect.addToWallet();
     }
 
+    const onSignOut = () => {
+        oauth2Service.logout();
+        setIsAuthenticated(false);
+        setUserInfo(null);
+    }
+
     return (
         <>
             {isLoading ? <Loader isLoading={isLoading}/> : null}
@@ -250,6 +275,7 @@ export const Login = () => {
                         <Button onClick={onLoginWithToken}>Login With Token</Button>
                         <Button onClick={onOpenPdf}>Open PDF</Button>
                         <Button onClick={onTestMsalScope}>Test Msal Scope</Button>
+                        <SignOutButton onClick={onSignOut}>Sign Out</SignOutButton>
                     </LoginContainer>
 
                 </Container>
